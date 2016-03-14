@@ -1,3 +1,5 @@
+// Distributed under the terms of the MIT license
+// Submitted by https://github.com/deville (Andrii Chernenko)
 
 func f(value: Any) {
 }
