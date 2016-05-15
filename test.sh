@@ -352,7 +352,7 @@ main() {
   echo "Running tests against: ${swiftc_version}"
   echo "Usage: $0 [-v] [-q] [-c<columns>] [-l] [file ...]"
   local current_max_id
-  current_max_id=$(find crashes crashes-fuzzing crashes-duplicates crashes-memory-corruption fixed -name "?????-*.swift" | cut -f2 -d'/' | grep -E '^[0-9]+\-' | sort -n | cut -f1 -d'-' | sed 's/^0*//g' | tail -1)
+  current_max_id=$(find crashes crashes-fuzzing crashes-duplicates fixed -name "?????-*.swift" | cut -f2 -d'/' | grep -E '^[0-9]+\-' | sort -n | cut -f1 -d'-' | sed 's/^0*//g' | tail -1)
   if [[ ${max_test_number} != 0 ]]; then
     current_max_id=${max_test_number}
   fi
@@ -360,7 +360,7 @@ main() {
   next_id=$((current_max_id + 1))
   echo "Adding a new test case? The crash id to use for the next test case is ${next_id}."
   local duplicate_bug_ids
-  duplicate_bug_ids=$(find crashes crashes-fuzzing crashes-duplicates crashes-memory-corruption fixed -name "?????-*.swift" | cut -f2 -d/ | cut -f1 -d'.' | sort | uniq | cut -f1 -d'-' | uniq -c | sed "s/^ *//g" | grep -E -v '^1 ' | cut -f2 -d" " | tr "\n" "," | sed "s/,$//g")
+  duplicate_bug_ids=$(find crashes crashes-fuzzing crashes-duplicates fixed -name "?????-*.swift" | cut -f2 -d/ | cut -f1 -d'.' | sort | uniq | cut -f1 -d'-' | uniq -c | sed "s/^ *//g" | grep -E -v '^1 ' | cut -f2 -d" " | tr "\n" "," | sed "s/,$//g")
   if [[ ${duplicate_bug_ids} != "" ]]; then
     show_error "Duplicate bug ids: ${duplicate_bug_ids}. Please re-number to avoid duplicates."
     echo
@@ -380,9 +380,8 @@ main() {
       echo
       exit
     fi
-    run_tests_in_directory "Currently known crashes, set #1 (verified memory corruption crashes)" "./crashes-memory-corruption"
-    run_tests_in_directory "Currently known crashes, set #2 (non memory corruption: human reported crashes, crashes not found by fuzzing)" "./crashes"
-    run_tests_in_directory "Currently known crashes, set #3 (non memory corruption: crashes found by fuzzing)" "./crashes-fuzzing"
+    run_tests_in_directory "Currently known crashes, set #1 (human reported crashes)" "./crashes"
+    run_tests_in_directory "Currently known crashes, set #2 (crashes found by fuzzing)" "./crashes-fuzzing"
     # run_tests_in_directory "Currently known crashes (duplicates)" "./crashes-duplicates"
     if [[ ${delete_dupes} == 1 || ${delete_fixed} == 1 ]]; then
       exit 0
