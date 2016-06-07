@@ -98,7 +98,7 @@ test_file() {
   fi
   local files_to_compile=${path}
   if [[ ${path} =~ part1.swift ]]; then
-    files_to_compile=${path//.part1.swift/.part[1-9].swift}
+    return
   elif [[ ${path} =~ (part|library)[2-9].swift ]]; then
     return
   fi
