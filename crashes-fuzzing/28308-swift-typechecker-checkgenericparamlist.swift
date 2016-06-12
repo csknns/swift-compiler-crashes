@@ -28,11 +28,9 @@ struct B:e
 if true {}
 {
 {func a(){{let l=b
-import Foundation
 if{
 enum S<T where k:A{
 var f{let a=b where B<T : A{
-import Foundation
 class A.h:BooleanType
 func c
 {
