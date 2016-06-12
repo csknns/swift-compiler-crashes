@@ -15,7 +15,6 @@ readonly COLOR_BOLD="\e[1m"
 readonly COLOR_NORMAL_DISPLAY="\e[0m"
 
 swiftc_command="swiftc"
-# swiftc_command="xcrun -sdk macosx swiftc"
 
 columns=$(tput cols)
 delete_dupes=0
@@ -91,7 +90,6 @@ get_crash_hash() {
 }
 
 test_file() {
-  local sdk=macosx
   local path=$1
   if [[ ! -f ${path} ]]; then
     return
