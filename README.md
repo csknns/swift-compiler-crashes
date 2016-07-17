@@ -353,4 +353,4 @@ Adding a new test case? The crash id to use for the next test case is 28247.
 
 License
 =======
-All files in this repository are distributed under the terms of the MIT license (see <a href="https://github.com/practicalswift/swift-compiler-crashes/blob/master/LICENSE">LICENSE</a>).
+See <a href="https://github.com/practicalswift/swift-compiler-crashes/blob/master/LICENSE">LICENSE</a>).
