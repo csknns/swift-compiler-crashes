@@ -9,6 +9,6 @@
 
 // RUN: not --crash %target-swift-frontend %s -parse
 extension Dictionary {
-    func a<b: Sequence where Value: Sequence>(_: () -> b) -> Dictionary<Key, b> {
+    func a<b: Sequence where Value: Sequence>() -> Dictionary<Key, b> {
     }
 }
