@@ -7,6 +7,8 @@ echo "* If two crashes have the same crash hash (see get_crash_hash()), then the
 echo "* If two crashes have the same crash hash and the same length, the first discovered one wins."
 echo
 
+set -u
+
 version=$(swiftc --version | head -1)
 echo "Testing with Swift compiler (\"swiftc\"):"
 echo "${version}"
