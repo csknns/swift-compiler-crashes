@@ -12,16 +12,7 @@ echo "Testing with Swift compiler (\"swiftc\"):"
 echo "${version}"
 echo
 
-get_crash_hash() {
-  compilation_output="$1"
-  normalized_stack_trace=$(grep -E '^[0-9]+ swift +0x[0-f]' <<< "${compilation_output}"| head -1)
-  if [[ ${normalized_stack_trace} == "" ]]; then
-    crash_hash=""
-  else
-    crash_hash=$(shasum <<< "${normalized_stack_trace}" | head -c10)
-  fi
-  echo -n "${crash_hash}"
-}
+source test.get_crash_hash.sh
 
 seen_crashes=""
 test_crash_case() {

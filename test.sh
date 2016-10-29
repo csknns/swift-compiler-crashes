@@ -9,6 +9,8 @@
 # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error when performing parameter expansion
 set -u
 
+source test.get_crash_hash.sh
+
 readonly COLOR_RED="\e[31m"
 readonly COLOR_GREEN="\e[32m"
 readonly COLOR_BOLD="\e[1m"
@@ -72,21 +74,6 @@ execute_with_timeout() {
   local return_code=$?
   echo "${out}" | tr -d "\r"
   return ${return_code}
-}
-
-# Definition of crash uniqueness (improvements welcome!) …
-# A crash is treated as non-duplicate if it has an unique "crash hash" as computed by the following crash hash function:
-get_crash_hash() {
-  local compilation_output="$1"
-  local unreachable_message=$(grep "UNREACHABLE executed at " <<< ${compilation_output} | head -1)
-  local assertion_message=$(grep "Assertion " <<< "${compilation_output}" | tr ":" "\n" | grep "Assertion " | head -1)
-  local normalized_stack_trace="${unreachable_message}${assertion_message}$(grep -E '^[0-9]+ swift +0x[0-f]' <<< ${compilation_output} | head -1)"
-  if [[ ${normalized_stack_trace} == "" ]]; then
-    crash_hash=""
-  else
-    crash_hash=$(shasum <<< "${normalized_stack_trace}" | head -c10)
-  fi
-  echo -n "${crash_hash}"
 }
 
 test_file() {
@@ -324,7 +311,8 @@ run_tests_in_directory() {
   print_header "${header}"
   local found_tests=0
   local test_path
-  local operating_system="$(uname -s)"
+  local operating_system
+  operating_system="$(uname -s)"
   for test_path in "${path}"/*.swift; do
     # Skipping Darwin dependent tests 28184/28185 on non-Darwin platforms.
     if [[ "${operating_system}" != "Darwin" && "${test_path}" =~ (28184|28185) ]]; then
