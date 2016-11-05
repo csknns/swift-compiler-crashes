@@ -12,7 +12,7 @@ get_crash_hash() {
   assertion_message=$(grep "Assertion " <<< "${compilation_output}" | tr ":" "\n" | grep "Assertion " | head -1)
   normalized_stack_trace="${unreachable_message}${assertion_message}"
   if [[ ${normalized_stack_trace} == "" ]]; then
-      normalized_stack_trace=$(grep -E '^[0-9]+ swift +0x[0-f]' <<< "${compilation_output}" | head -1)
+      normalized_stack_trace=$(grep --text -E '^#[0-9] 0x[0-9a-f]{16} ' <<< "${compilation_output}" | cut -f1 -d'/' | grep --text -E swift | head -1 | tr " " "\n" | grep --text -E '^0x[0-9a-f]{16}$' | head -1)
   fi
   if [[ ${normalized_stack_trace} == "" ]]; then
     crash_hash=""

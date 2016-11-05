@@ -18,6 +18,12 @@ readonly COLOR_NORMAL_DISPLAY="\e[0m"
 
 swiftc_command="swiftc"
 
+llvm_symbolizer_path=$(which llvm-symbolizer)
+if [[ ${llvm_symbolizer_path} == "" ]]; then
+    echo "Error: llvm-symbolizer must be in PATH in order for swiftc to create the expected stack trace format."
+    exit 1
+fi
+
 columns=$(tput cols)
 delete_dupes=0
 delete_fixed=0
@@ -252,6 +258,14 @@ test_file() {
     stacktrace_log=./stacks/$(basename $(head -1 <<< "${files_to_compile}") | sed 's/.swift$//').txt
     grep -E "0x[0-9a-f]" <<< "${output}" | sed 's/ 0x[0-9a-f]*//g' | sed 's/ [0-9][0-9][0-9][0-9][0-9][0-9][0-9]*$/ [N]/g' | sed "s/^swift([0-9]*,0x[0-9a-f]*)/swift(N,0xN)/" | grep -E "^[0-9]" | grep -E -v '(libdyld|libsystem_kernel|libsystem_malloc|libsystem_platform|libsystem_c|libsystem_malloc)\.dylib' | grep -E -v '(llvm::sys::PrintStackTrace|SignalHandler)' > "${stacktrace_log}"
   fi
+
+  output_with_llvm_symbolizer=$(egrep '^#[0-9] 0x[0-9a-f]{16} swift::' <<< "${output}" | head -1)
+  output_without_llvm_symbolizer=$(egrep '^[0-9]+ swift +0x[0-9a-f]{16}$' <<< "${output}" | head -1)
+  if [[ ${output_with_llvm_symbolizer} == "" && ${output_without_llvm_symbolizer} != "" ]]; then
+      echo "Error: llvm-symbolizer appears in PATH but does not create the expected stack trace format."
+      exit 1
+  fi
+
   local hash
   hash=$(get_crash_hash "${output}")
   # grep -E "0x[0-9a-f]" <<< "${output}" | grep -E '(swift|llvm)::' | grep -vE '(llvm::sys::|frontend_main)' | awk '{ $1=$2=$3=""; print $0 }' | sed 's/^ *//g' | grep -E '(swift|llvm)::' | head -10
