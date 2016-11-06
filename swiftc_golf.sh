@@ -1,5 +1,11 @@
 #!/bin/bash
 
+llvm_symbolizer_path=$(which llvm-symbolizer)
+if [[ ${llvm_symbolizer_path} == "" ]]; then
+    echo "Error: llvm-symbolizer must be in PATH in order for swiftc to create the expected stack trace format."
+    exit 1
+fi
+
 echo "Rules for swiftc golf:"
 echo "* Entries must crash swiftc."
 echo "* Entries must be ten (10) characters or less."
@@ -35,7 +41,7 @@ test_crash_case() {
     dupe_text=" (DUPE!)"
   fi
   seen_crashes="${seen_crashes}:${crash_hash}"
-  if grep -q -E '^[0-9]+ +swift +0x' <<< "${compilation_output}"; then
+  if grep -q -E '0x[0-9a-f]{16}' <<< "${compilation_output}"; then
     echo "· ✘ · ${escaped_source_code} (${number_of_bytes} bytes)${dupe_text}"
   else
     echo "· ✓ · ${escaped_source_code} (${number_of_bytes} bytes)"
