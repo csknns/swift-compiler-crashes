@@ -56,6 +56,7 @@ echo "Crashing:"
 test_crash_case '!('
 test_crash_case 'if('
 test_crash_case '.A[]'
+test_crash_case '._._=0'
 test_crash_case '[_?,&_'
 test_crash_case 'nil?=\n&_,'
 
