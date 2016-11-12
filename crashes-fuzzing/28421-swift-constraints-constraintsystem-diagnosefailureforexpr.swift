@@ -7,8 +7,4 @@
 
 // RUN: not --crash %target-swift-frontend %s -parse
 // REQUIRES: asserts
-{
-extension{{
-}init(){a{}{
-for b
-(
+if(
