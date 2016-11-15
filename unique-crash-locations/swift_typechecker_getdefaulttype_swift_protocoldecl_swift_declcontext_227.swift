@@ -1,1 +1,0 @@
-../crashes-duplicates/21318-swift-typechecker-getdefaulttype.swift

@@ -1,1 +1,0 @@
-../crashes-duplicates/26293-swift-conformancelookuptable-getconformance.swift

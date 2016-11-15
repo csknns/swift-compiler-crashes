@@ -1,1 +1,0 @@
-../crashes-duplicates/05947-swift-enumdecl-issimpleenum.swift

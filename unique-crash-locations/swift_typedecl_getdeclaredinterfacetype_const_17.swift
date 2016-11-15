@@ -1,1 +1,0 @@
-../crashes-duplicates/23854-swift-typedecl-getdeclaredinterfacetype.swift

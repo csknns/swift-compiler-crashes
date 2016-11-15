@@ -1,1 +1,0 @@
-../crashes-duplicates/23741-swift-protocoldecl-inheritsfrom.swift

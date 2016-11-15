@@ -1,1 +1,0 @@
-../crashes/00061-visit-any-struct-type.part2.swift

@@ -1,9 +1,0 @@
-4  swift                    swift::irgen::emitPolymorphicArguments(swift::irgen::IRGenFunction&, swift::CanTypeWrapper<swift::SILFunctionType>, swift::CanTypeWrapper<swift::SILFunctionType>, llvm::ArrayRef<swift::Substitution>, swift::irgen::WitnessMetadata*, swift::irgen::Explosion&) + 587
-5  swift                    (anonymous namespace)::IRGenSILFunction::visitFullApplySite(swift::FullApplySite) + 2230
-6  swift                    swift::irgen::IRGenModule::emitSILFunction(swift::SILFunction*) + 10973
-7  swift                    swift::irgen::IRGenModuleDispatcher::emitLazyDefinitions() + 307
-8  swift                    performIRGeneration(swift::IRGenOptions&, swift::ModuleDecl*, swift::SILModule*, llvm::StringRef, llvm::LLVMContext&, swift::SourceFile*, unsigned int) + 991
-9  swift                    swift::performIRGeneration(swift::IRGenOptions&, swift::SourceFile&, swift::SILModule*, llvm::StringRef, llvm::LLVMContext&, unsigned int) + 64
-10 swift                    performCompile(swift::CompilerInstance&, swift::CompilerInvocation&, llvm::ArrayRef<char const*>, int&) + 13704
-11 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2682
-12 swift                    main + 2247

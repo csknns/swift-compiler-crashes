@@ -1,1 +1,0 @@
-../crashes-duplicates/01915-swift-typechecker-getprotocol.swift

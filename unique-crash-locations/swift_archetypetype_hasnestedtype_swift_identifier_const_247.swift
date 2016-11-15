@@ -1,1 +1,0 @@
-../crashes-duplicates/19636-swift-archetypetype-hasnestedtype.swift

@@ -1,1 +1,0 @@
-../crashes-duplicates/22787-swift-classtype-profile.swift

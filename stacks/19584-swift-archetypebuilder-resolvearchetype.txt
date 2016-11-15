@@ -1,9 +1,0 @@
-3  swift                    swift::ArchetypeBuilder::resolveArchetype(swift::Type) + 70
-4  swift                    void checkCircularity<swift::ClassDecl>(swift::TypeChecker&, swift::ClassDecl*, swift::Diag<llvm::StringRef>, swift::Diag<swift::Identifier>, llvm::SmallVectorImpl<swift::ClassDecl*>&) + 361
-5  swift                    void checkCircularity<swift::ClassDecl>(swift::TypeChecker&, swift::ClassDecl*, swift::Diag<llvm::StringRef>, swift::Diag<swift::Identifier>, llvm::SmallVectorImpl<swift::ClassDecl*>&) + 361
-6  swift                    swift::ASTVisitor<(anonymous namespace)::DeclChecker, void, void, void, void, void, void>::visit(swift::Decl*) + 2526
-7  swift                    swift::TypeChecker::typeCheckDecl(swift::Decl*, bool) + 123
-8  swift                    swift::performTypeChecking(swift::SourceFile&, swift::TopLevelContext&, unsigned int) + 1384
-9  swift                    swift::CompilerInstance::performSema() + 2060
-10 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2008
-11 swift                    main + 1677

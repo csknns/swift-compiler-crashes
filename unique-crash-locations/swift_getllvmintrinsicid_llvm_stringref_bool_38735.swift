@@ -1,1 +1,0 @@
-../crashes-duplicates/22973-swift-declattribute-getattrkindfromstring.swift

@@ -1,1 +1,0 @@
-../crashes-duplicates/21969-swift-type-getstring.swift

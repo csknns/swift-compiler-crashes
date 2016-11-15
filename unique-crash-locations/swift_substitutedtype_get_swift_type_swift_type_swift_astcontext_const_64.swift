@@ -1,1 +1,0 @@
-../crashes-duplicates/06823-swift-substitutedtype-get.swift

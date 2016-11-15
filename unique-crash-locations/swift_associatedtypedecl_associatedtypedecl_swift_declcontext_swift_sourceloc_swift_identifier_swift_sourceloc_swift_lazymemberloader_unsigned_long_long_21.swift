@@ -1,1 +1,0 @@
-../crashes-duplicates/26859-swift-classdecl-classdecl.swift

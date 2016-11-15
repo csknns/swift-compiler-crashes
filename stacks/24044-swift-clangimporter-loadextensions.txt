@@ -1,8 +1,0 @@
-3  swift                    swift::ClangImporter::loadExtensions(swift::NominalTypeDecl*, unsigned int) + 82
-4  swift                    swift::NominalTypeDecl::getDeclaredTypeInContext() const + 232
-5  swift                    swift::ASTVisitor<(anonymous namespace)::DeclChecker, void, void, void, void, void, void>::visit(swift::Decl*) + 6819
-6  swift                    swift::TypeChecker::typeCheckDecl(swift::Decl*, bool) + 123
-7  swift                    swift::performTypeChecking(swift::SourceFile&, swift::TopLevelContext&, swift::OptionSet<swift::TypeCheckingFlags, unsigned int>, unsigned int) + 1274
-8  swift                    swift::CompilerInstance::performSema() + 2108
-9  swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2149
-10 swift                    main + 1814

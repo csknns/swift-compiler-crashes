@@ -1,8 +1,0 @@
-4  swift                    swift::NominalTypeDecl::getDeclaredTypeInContext() const + 232
-5  swift                    swift::NominalTypeDecl::computeType() + 29
-6  swift                    swift::TypeChecker::validateDecl(swift::ValueDecl*, bool) + 1328
-7  swift                    typeCheckFunctionsAndExternalDecls(swift::TypeChecker&) + 712
-8  swift                    swift::performTypeChecking(swift::SourceFile&, swift::TopLevelContext&, swift::OptionSet<swift::TypeCheckingFlags, unsigned int>, unsigned int) + 1493
-9  swift                    swift::CompilerInstance::performSema() + 2108
-10 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2149
-11 swift                    main + 1814

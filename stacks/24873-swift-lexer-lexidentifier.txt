@@ -1,9 +1,0 @@
-3  swift                    swift::Lexer::lexIdentifier() + 254
-4  swift                    swift::TypeChecker::conformsToProtocol(swift::Type, swift::ProtocolDecl*, swift::DeclContext*, bool, swift::ProtocolConformance**, swift::SourceLoc, swift::Decl*) + 104
-5  swift                    checkEnumRawValues(swift::TypeChecker&, swift::EnumDecl*) + 296
-6  swift                    swift::ASTVisitor<(anonymous namespace)::DeclChecker, void, void, void, void, void, void>::visit(swift::Decl*) + 6286
-7  swift                    swift::TypeChecker::typeCheckDecl(swift::Decl*, bool) + 124
-8  swift                    swift::performTypeChecking(swift::SourceFile&, swift::TopLevelContext&, swift::OptionSet<swift::TypeCheckingFlags, unsigned int>, unsigned int) + 1114
-9  swift                    swift::CompilerInstance::performSema() + 2428
-10 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2151
-11 swift                    main + 1814

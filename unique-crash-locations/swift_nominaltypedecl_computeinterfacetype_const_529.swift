@@ -1,1 +1,0 @@
-../crashes-duplicates/06251-swift-nominaltypedecl-computeinterfacetype.swift

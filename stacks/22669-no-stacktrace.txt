@@ -1,9 +1,0 @@
-3  swift                    swift::TypeChecker::isRepresentableInObjC(swift::AbstractFunctionDecl const*, swift::ObjCReason) + 21
-4  swift                    checkRedeclaration(swift::TypeChecker&, swift::ValueDecl*) + 153
-5  swift                    swift::ASTVisitor<(anonymous namespace)::DeclChecker, void, void, void, void, void, void>::visit(swift::Decl*) + 2193
-6  swift                    swift::ASTVisitor<(anonymous namespace)::DeclChecker, void, void, void, void, void, void>::visit(swift::Decl*) + 2164
-7  swift                    swift::TypeChecker::typeCheckDecl(swift::Decl*, bool) + 123
-8  swift                    swift::performTypeChecking(swift::SourceFile&, swift::TopLevelContext&, unsigned int) + 1384
-9  swift                    swift::CompilerInstance::performSema() + 2060
-10 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 2008
-11 swift                    main + 1677

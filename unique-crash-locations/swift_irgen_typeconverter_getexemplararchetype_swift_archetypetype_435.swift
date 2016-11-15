@@ -1,1 +1,0 @@
-../crashes-duplicates/22728-swift-irgen-typeconverter-getexemplararchetype.swift

@@ -1,1 +1,0 @@
-../crashes-duplicates/06787-swift-collectionexpr-getelements.swift

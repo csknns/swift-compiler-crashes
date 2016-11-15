@@ -1,1 +1,0 @@
-../crashes-duplicates/24224-swift-tupletype-get.swift

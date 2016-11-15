@@ -1,1 +1,0 @@
-../crashes-duplicates/01028-swift-camel-case-getfirstword.swift

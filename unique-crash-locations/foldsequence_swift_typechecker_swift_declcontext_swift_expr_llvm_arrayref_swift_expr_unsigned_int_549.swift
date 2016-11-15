@@ -1,1 +1,0 @@
-../crashes-duplicates/22198-swift-typechecker-typecheckcheckedcast.swift

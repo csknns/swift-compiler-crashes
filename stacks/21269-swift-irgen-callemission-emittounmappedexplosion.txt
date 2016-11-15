@@ -1,9 +1,0 @@
-4  swift                    swift::irgen::CallEmission::emitCallSite(bool) + 99
-5  swift                    swift::irgen::CallEmission::emitToUnmappedExplosion(swift::irgen::Explosion&) + 31
-6  swift                    swift::SILVisitor<(anonymous namespace)::IRGenSILFunction, void>::visit(swift::ValueBase*) + 39851
-7  swift                    swift::irgen::IRGenModule::emitSILFunction(swift::SILFunction*) + 9485
-8  swift                    swift::irgen::IRGenModule::emitLazyDefinitions() + 39
-9  swift                    performIRGeneration(swift::IRGenOptions&, swift::Module*, swift::SILModule*, llvm::StringRef, llvm::LLVMContext&, swift::SourceFile*, unsigned int) + 2268
-10 swift                    swift::performIRGeneration(swift::IRGenOptions&, swift::SourceFile&, swift::SILModule*, llvm::StringRef, llvm::LLVMContext&, unsigned int) + 51
-11 swift                    frontend_main(llvm::ArrayRef<char const*>, char const*, void*) + 10196
-12 swift                    main + 1814

@@ -1,1 +1,0 @@
-../crashes-duplicates/22315-swift-typebase-getrelabeledtype.swift

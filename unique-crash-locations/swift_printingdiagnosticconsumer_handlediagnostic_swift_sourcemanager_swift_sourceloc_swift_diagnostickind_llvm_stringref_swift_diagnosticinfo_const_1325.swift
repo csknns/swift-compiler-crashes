@@ -1,1 +1,0 @@
-../crashes-duplicates/01420-swift-printingdiagnosticconsumer-handlediagnostic.swift
