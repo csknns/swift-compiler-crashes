@@ -2,8 +2,6 @@
 
 Contributing to swift-compiler-crashes is really easy – you only need to submit one file in your pull request; the crash case.
 
-All other files in the project - such as stack trace logs, etc. - are automatically generated weekly, so there is no need to submit anything beyond your crash case :-)
-
 The crash cases are named according to the following pattern:
 
 ````
@@ -26,7 +24,7 @@ The highest crash case number in this example is 22721, so we'll use the next av
 ### 2. Find out in which Swift compiler function your crash case is triggered
 
 ````
-    $ xcrun swiftc crash.swift 2>&1 | egrep 'swift.*0x'  | egrep -v '(PrintStackTrace|SignalHandler)' | head -1
+    $ swiftc crash.swift 2>&1 | egrep '[0-9]x[0-9a-f]{16}' | grep swift:: | head -1
     4  swift                    0x000000010d83c4ef swift::irgen::ProtocolInfo::getConformance(swift::irgen::IRGenModule&, swift::CanType, swift::irgen::TypeInfo const&, swift::ProtocolDecl*, swift::ProtocolConformance const&) const + 207
 ````
 
