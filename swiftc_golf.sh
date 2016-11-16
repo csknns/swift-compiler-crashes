@@ -54,11 +54,17 @@ test_crash_case() {
 echo "Crashing:"
 
 test_crash_case '!('
+test_crash_case '-.A'
 test_crash_case 'if('
 test_crash_case '.A[]'
+test_crash_case '#if8='
+test_crash_case '_?==1'
 test_crash_case '._._=0'
+test_crash_case '.r=nil'
 test_crash_case '[_?,&_'
 test_crash_case 'Slice.0'
+test_crash_case '{$0(*)}{'
+test_crash_case '(_=nil,1)'
 test_crash_case 'nil?=\n&_,'
 
 echo
