@@ -66,6 +66,7 @@ test_crash_case 'Slice._'
 test_crash_case '{$0(*)}{'
 test_crash_case '(_=nil,_)'
 test_crash_case 'nil?=\n&_,'
+test_crash_case '{_=(t:_?{{'
 
 echo
 echo "Fixed:"
