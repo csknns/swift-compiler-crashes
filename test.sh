@@ -6,7 +6,7 @@
 # Tip: Want to see details of the type checker's reasoning? Compile with "swiftc -Xfrontend -debug-constraints"
 # Tip: Want to see what individual job invocations a swift/swiftc run invokes? Try "swift[c] -driver-print-jobs foo.swift"
 
-# Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error when performing parameter expansion
+# Treat unset variables and parameters other than the special parameters "@" or "*" as an error when performing parameter expansion
 set -u
 
 source test.get_crash_hash.sh
@@ -27,9 +27,7 @@ fi
 columns=$(tput cols)
 delete_dupes=0
 delete_fixed=0
-log_stacks=0
 max_test_number=0
-quick_mode=0
 verbose=0
 while getopts "c:vldfm:q" o; do
   case ${o} in
@@ -39,9 +37,6 @@ while getopts "c:vldfm:q" o; do
     v)
       verbose=1
       ;;
-    l)
-      log_stacks=1
-      ;;
     d)
       delete_dupes=1
       ;;
@@ -50,9 +45,6 @@ while getopts "c:vldfm:q" o; do
       ;;
     m)
       max_test_number=${OPTARG}
-      ;;
-    q)
-      quick_mode=1
       ;;
   esac
 done
@@ -70,16 +62,6 @@ seen_crash_hashes=""
 show_error() {
   local warning="$1"
   printf "%b" "${COLOR_RED}[Error]${COLOR_NORMAL_DISPLAY} ${COLOR_BOLD}${warning}${COLOR_NORMAL_DISPLAY}\n"
-}
-
-execute_with_timeout() {
-  local timeout_in_seconds=$1
-  local command=$2
-  local out
-  out=$(expect -c "set echo \"-noecho\"; set timeout ${timeout_in_seconds}; spawn -noecho /bin/sh -c \"${command}\"; expect timeout { exit 1 } eof { exit 0 }" 2>&1)
-  local return_code=$?
-  echo "${out}" | tr -d "\r"
-  return ${return_code}
 }
 
 test_file() {
@@ -111,152 +93,14 @@ test_file() {
   local swift_crash=0
   local compilation_comment=""
   local output=""
-  # Test mode: Run Swift code and catch a portential hang (infinite running time),
-  #            excessive running time or excessive compilation time.
-  #            Used for test cases named *.timeout.swift.
-  if [[ ${swift_crash} == 0 && ${files_to_compile} =~ \.timeout\. ]]; then
-    local _
-    for _ in {1..5}; do
-      output=$(execute_with_timeout 10 "swift ${files_to_compile}")
-      # echo "# output: ${output}"
-      if [[ $? == 1 ]]; then
-        swift_crash=1
-        compilation_comment="timeout"
-        break
-      elif [[ ${output} =~ Stack\ dump: ]]; then
-        swift_crash=1
-        compilation_comment=""
-        break
-      elif [[ ${output} =~ Segmentation\ fault ]]; then
-        swift_crash=1
-        compilation_comment=""
-        break
-      elif [[ ${output} =~ Aborted ]]; then
-        swift_crash=1
-        compilation_comment=""
-        break
-      elif [[ ${output} =~ \ malloc:\  ]]; then
-        swift_crash=1
-        compilation_comment="malloc"
-        break
-      fi
-    done
-  fi
-  # Test mode: Compile using swiftc without any optimizations ("-Onone").
-  #            Used for test cases named *.swift.
-  if [[ ${swift_crash} == 0 && ! ${files_to_compile} =~ \.timeout\. ]]; then
-    local _
-    for _ in {1..50}; do
-      # shellcheck disable=SC2086
-      output=$(${swiftc_command} -Onone -o /dev/null ${files_to_compile} 2>&1 | strings)
-      # echo "# output: ${output}"
-      if [[ ${output} =~ \ malloc:\  ]]; then
-        swift_crash=1
-        compilation_comment="malloc"
-        break
-      elif [[ ${output} =~ (error:\ unable\ to\ execute\ command:\ Segmentation\ fault|LLVM\ ERROR:|While\ emitting\ IR\ for\ source\ file|error:\ linker\ command\ failed\ with\ exit\ code\ 1|error:\ swift\ frontend\ command\ failed\ due\ to\ signal|Stack\ dump:|Segmentation\ fault|Aborted) ]]; then
-        swift_crash=1
-        compilation_comment=""
-        break
-      elif [[ ! ${files_to_compile} =~ \.random\. ]]; then
-        output=""
-        break
-      fi
-    done
-  fi
-  # Test mode: Invoke Swift SIL parser (-parse-sil).
-  #            Used for test cases named *.sil.swift.
-  if [[ ${swift_crash} == 0 && ${files_to_compile} =~ \.sil\. ]]; then
-    # shellcheck disable=SC2086
-    output=$(${swiftc_command} -parse-sil -o /dev/null ${files_to_compile} 2>&1 | strings)
-    # echo "# output: ${output}"
-    if [[ ${output} =~ (error:\ unable\ to\ execute\ command:\ Segmentation\ fault|LLVM\ ERROR:|While\ emitting\ IR\ for\ source\ file|error:\ linker\ command\ failed\ with\ exit\ code\ 1|error:\ swift\ frontend\ command\ failed\ due\ to\ signal|Stack\ dump:|Segmentation\ fault|Aborted) ]]; then
-      swift_crash=1
-      compilation_comment="sil"
-    fi
-  fi
-  # Test mode: Compile using swiftc with optimization option "-O".
-  #            Used for test cases named *.swift.
-  if [[ ${swift_crash} == 0 && ! ${files_to_compile} =~ \.timeout\. ]]; then
-    local _
-    for _ in {1..20}; do
-      # shellcheck disable=SC2086
-      output=$(${swiftc_command} -O -o /dev/null ${files_to_compile} 2>&1 | strings)
-      # echo "# output: ${output}"
-      if [[ ${output} =~ \ malloc:\  ]]; then
-        swift_crash=1
-        compilation_comment="malloc"
-        break
-      elif [[ ${output} =~ (error:\ unable\ to\ execute\ command:\ Segmentation\ fault|LLVM\ ERROR:|While\ emitting\ IR\ for\ source\ file|error:\ linker\ command\ failed\ with\ exit\ code\ 1|error:\ swift\ frontend\ command\ failed\ due\ to\ signal|Stack\ dump:|Segmentation\ fault|Aborted) ]]; then
-        swift_crash=1
-        compilation_comment="-O"
-        break
-      elif [[ ! ${files_to_compile} =~ \.random\. ]]; then
-        output=""
-        break
-      fi
-    done
-  fi
-  # Test mode: Compile with file #1 as a library and file #2 as a library user.
-  #            Used for test cases named *.library{1,2}.swift.
-  if [[ ${swift_crash} == 0 && ${files_to_compile} =~ \.library1\. && -f ${files_to_compile//.library1./.library2.} ]]; then
-    local source_file_using_library=${files_to_compile//.library1./.library2.}
+  # shellcheck disable=SC2086
+  output=$(${swiftc_command} -o /dev/null ${files_to_compile} 2>&1 | strings)
+  if [[ ${output} =~ \ malloc:\  ]]; then
+    swift_crash=1
+    compilation_comment="malloc"
+  elif [[ ${output} =~ (error:\ unable\ to\ execute\ command:\ Segmentation\ fault|LLVM\ ERROR:|While\ emitting\ IR\ for\ source\ file|error:\ linker\ command\ failed\ with\ exit\ code\ 1|error:\ swift\ frontend\ command\ failed\ due\ to\ signal|Stack\ dump:|Segmentation\ fault|Aborted) ]]; then
+    swift_crash=1
     compilation_comment=""
-    rm -f DummyModule.swiftdoc DummyModule.swiftmodule libDummyModule.dylib libDummyModule.app
-    output=$(${swiftc_command} -emit-library -o libDummyModule.dylib -Xlinker -install_name -Xlinker @rpath/libDummyModule.dylib -emit-module -emit-module-path DummyModule.swiftmodule -module-name DummyModule -module-link-name DummyModule "${files_to_compile}" 2>&1)
-    # echo "# output: ${output}"
-    if [[ $? == 0 ]]; then
-      # shellcheck disable=SC2086
-      output=$(${swiftc_command} "${source_file_using_library}" -o libDummyModule.app -I . -L . -Xlinker -rpath -Xlinker @executable_path/ 2>&1 | strings)
-      # echo "# output: ${output}"
-      if [[ ${output} =~ (error:\ unable\ to\ execute\ command:\ Segmentation\ fault|LLVM\ ERROR:|While\ emitting\ IR\ for\ source\ file|Aborted) ]]; then
-        swift_crash=1
-        compilation_comment="lib I"
-      elif [[ ! ${output} =~ implicit\ entry/start\ for\ main\ executable && ${output} =~ error:\ linker\ command\ failed\ with\ exit\ code\ 1 ]]; then
-        swift_crash=1
-        compilation_comment="lib II"
-      fi
-      if [[ ${swift_crash} == 0 ]]; then
-        local output_1
-        output_1=$(./libDummyModule.app 2>&1)
-        local exit_1=$?
-        # shellcheck disable=SC2086
-        local output_2
-        output_2=$(swift -I . "${source_file_using_library}" 2>&1)
-        local exit_2=$?
-        if [[ "${exit_1}" != "${exit_2}" ]]; then
-          swift_crash=1
-          output="${output_1}${output_2}"
-	  # echo "# output: ${output}"
-          compilation_comment="lib III"
-        fi
-      fi
-    fi
-    rm -f DummyModule.swiftdoc DummyModule.swiftmodule libDummyModule.dylib libDummyModule.app
-  fi
-  # Test mode: Run Swift code and watch for runtime error.
-  #            Used for test cases named *.runtime.swift.
-  if [[ ${swift_crash} == 0 && ${files_to_compile} =~ \.runtime\. ]]; then
-    local _
-    for _ in {1..10}; do
-      # shellcheck disable=SC2086
-      output=$(swift -Onone ${files_to_compile} 2>&1 | strings)
-      # echo "# output: ${output}"
-      if [[ ${output} =~ llvm::sys::PrintStackTrace ]]; then
-        swift_crash=1
-        compilation_comment="runtime"
-        output=""
-        break
-      elif [[ ! ${files_to_compile} =~ \.random\. ]]; then
-        output=""
-        break
-      fi
-    done
-  fi
-  if [[ ${log_stacks} == 1 ]]; then
-    # shellcheck disable=SC2046
-    stacktrace_log=./stacks/$(basename $(head -1 <<< "${files_to_compile}") | sed 's/.swift$//').txt
-    grep -E "0x[0-9a-f]" <<< "${output}" | sed 's/ 0x[0-9a-f]*//g' | sed 's/ [0-9][0-9][0-9][0-9][0-9][0-9][0-9]*$/ [N]/g' | sed "s/^swift([0-9]*,0x[0-9a-f]*)/swift(N,0xN)/" | grep -E "^[0-9]" | grep -E -v '(libdyld|libsystem_kernel|libsystem_malloc|libsystem_platform|libsystem_c|libsystem_malloc)\.dylib' | grep -E -v '(llvm::sys::PrintStackTrace|SignalHandler)' > "${stacktrace_log}"
   fi
 
   output_with_llvm_symbolizer=$(egrep '^#[0-9] 0x[0-9a-f]{16} swift::' <<< "${output}" | head -1)
@@ -325,13 +169,7 @@ run_tests_in_directory() {
   print_header "${header}"
   local found_tests=0
   local test_path
-  local operating_system
-  operating_system="$(uname -s)"
   for test_path in "${path}"/*.swift; do
-    # Skipping Darwin dependent tests 28184/28185 on non-Darwin platforms.
-    if [[ "${operating_system}" != "Darwin" && "${test_path}" =~ (28184|28185) ]]; then
-       continue
-    fi
     if [[ -h "${test_path}" ]]; then
       test_path=$(readlink "${test_path}" | cut -b4-)
     fi
@@ -371,15 +209,6 @@ main() {
   }
   local argument_files=$*
   if [[ ${argument_files} == "" ]]; then
-    if [[ ${quick_mode} == 1 ]]; then
-      print_header "Quick mode — testing only crashes triggered at unique crash locations"
-      local test_file
-      for test_file in $(find unique-crash-locations/ -type l -exec readlink {} \; | cut -f2- -d/ | sort -t/ -k2); do
-        test_file "${test_file}"
-      done
-      echo
-      exit
-    fi
     run_tests_in_directory "Currently known crashes, set #1 (human reported crashes)" "./crashes"
     run_tests_in_directory "Currently known crashes, set #2 (crashes found by fuzzing)" "./crashes-fuzzing"
     # run_tests_in_directory "Currently known crashes (duplicates)" "./crashes-duplicates"
