@@ -27,7 +27,6 @@ fi
 columns=$(tput cols)
 delete_dupes=0
 delete_fixed=0
-max_test_number=0
 verbose=0
 while getopts "c:vldfm:q" o; do
   case ${o} in
@@ -42,9 +41,6 @@ while getopts "c:vldfm:q" o; do
       ;;
     f)
       delete_fixed=1
-      ;;
-    m)
-      max_test_number=${OPTARG}
       ;;
   esac
 done
@@ -84,11 +80,6 @@ test_file() {
   test_name=${test_name//.runtime/}
   test_name=${test_name//.sil/}
   test_name=${test_name//.timeout/}
-  local current_test_number
-  current_test_number=$(echo "${test_name}" | tr " " "\n" | grep -E "^[0-9]+$" | head -1 | sed "s/^0*//g")
-  if [[ ${max_test_number} != 0 && ${current_test_number} != "" && ${current_test_number} -gt ${max_test_number} ]]; then
-    return
-  fi
   num_tests=$((num_tests + 1))
   local swift_crash=0
   local compilation_comment=""
@@ -191,9 +182,6 @@ main() {
   echo "Usage: $0 [-v] [-q] [-c<columns>] [-l] [file ...]"
   local current_max_id
   current_max_id=$(find crashes crashes-fuzzing crashes-duplicates fixed -name "?????-*.swift" | cut -f2 -d'/' | grep -E '^[0-9]+\-' | sort -n | cut -f1 -d'-' | sed 's/^0*//g' | tail -1)
-  if [[ ${max_test_number} != 0 ]]; then
-    current_max_id=${max_test_number}
-  fi
   local next_id
   next_id=$((current_max_id + 1))
   echo "Adding a new test case? The crash id to use for the next test case is ${next_id}."
