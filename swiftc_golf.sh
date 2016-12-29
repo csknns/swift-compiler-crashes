@@ -56,7 +56,9 @@ test_crash_case 'Slice._'
 test_crash_case 'nil?=nil'
 test_crash_case '{$0(*)}{'
 test_crash_case 'nil?=\n&_,'
+test_crash_case 'sil_scope'
 test_crash_case '{$0=($0={'
+test_crash_case '{_=(x:{.a'
 
 echo
 echo "Fixed:"
