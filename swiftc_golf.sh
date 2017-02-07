@@ -46,8 +46,11 @@ test_crash_case() {
 
 echo "Crashing:"
 
-test_crash_case '#if8='
+test_crash_case '#if0='
+test_crash_case '[.h=_'
+test_crash_case '&[_=(&_'
 test_crash_case 'nil?=nil'
+test_crash_case '[(t:_._=('
 
 echo
 echo "Fixed:"
