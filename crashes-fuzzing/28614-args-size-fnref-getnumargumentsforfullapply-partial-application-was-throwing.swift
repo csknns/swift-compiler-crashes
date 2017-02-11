@@ -7,4 +7,4 @@
 
 // RUN: not --crash %target-swift-frontend %s -emit-ir
 // REQUIRES: asserts
-func a{guard let[]=(a||()A
+(()||()x

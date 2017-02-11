@@ -48,6 +48,7 @@ echo "Crashing:"
 
 test_crash_case '[.h=_'
 test_crash_case '&[_=(&_'
+test_crash_case '(()||()x'
 test_crash_case 'nil?=nil'
 test_crash_case '[(t:_._=('
 
