@@ -120,7 +120,7 @@ test_file() {
     num_crashed=$((num_crashed + 1))
     local adjusted_name_size=${name_size}
     if [[ ${is_dupe} == 1 ]]; then
-      test_name="${test_name} (${COLOR_BOLD}dupe?${COLOR_NORMAL_DISPLAY})"
+      test_name="${test_name} (${COLOR_BOLD}dupe${COLOR_NORMAL_DISPLAY})"
       adjusted_name_size=$((adjusted_name_size + 8))
       if [[ ${delete_dupes} == 1 && ${files_to_compile} =~ crashes-fuzzing ]]; then
         # shellcheck disable=SC2086
