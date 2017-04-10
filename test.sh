@@ -85,7 +85,7 @@ test_file() {
   local compilation_comment=""
   local output=""
   # shellcheck disable=SC2086
-  output=$(${swiftc_command} -o /dev/null ${files_to_compile} 2>&1 | strings)
+  output=$(${swiftc_command} -O -o /dev/null ${files_to_compile} 2>&1 | strings)
   if [[ ${output} =~ \ malloc:\  ]]; then
     swift_crash=1
     compilation_comment="malloc"
@@ -191,7 +191,7 @@ main() {
     show_error "Duplicate bug ids: ${duplicate_bug_ids}. Please re-number to avoid duplicates."
     echo
   fi
-  ${swiftc_command} - -o /dev/null 2>&1 <<< "" | grep -E -q "error:" && {
+  ${swiftc_command} -O - -o /dev/null 2>&1 <<< "" | grep -E -q "error:" && {
     show_error "swiftc does not appear to work. Cannot run tests. Please investigate."
     exit 1
   }
