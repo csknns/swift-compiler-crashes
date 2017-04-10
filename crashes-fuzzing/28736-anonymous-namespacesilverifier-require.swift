@@ -7,6 +7,4 @@
 // RUN: not --crash %target-swift-frontend %s -emit-ir -O
 // non-fuzz (@dusek)
 
-func f<T>(_ a: T) -> Void {
-    f(nil as [Any]?)
-}
+func f<T>(_ a:T)->Void{f(nil as[Any]?)}
