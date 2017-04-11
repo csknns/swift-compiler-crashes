@@ -3,7 +3,7 @@ Project swift-compiler-crashes
 
 This repo collects known test cases crashing the Swift compiler.
 
-All tests cases in the `crashes-fuzzing/` directories are known to generate a compiler crash under the current Swift compiler compiled from the master branch running under Linux (if not, please report!).
+All tests cases in the `crashes-fuzzing/` directories are known to generate a compiler crash under the current Swift compiler compiled from the master branch and running under Linux (if not, please report!).
 
 Help us towards a rock solid Swift compiler by contributing any compiler crashes you may encounter.
 
