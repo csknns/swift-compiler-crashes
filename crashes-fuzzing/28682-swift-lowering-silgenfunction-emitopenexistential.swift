@@ -6,15 +6,10 @@
 // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
 
 // RUN: not --crash %target-swift-frontend %s -emit-ir
-protocol P {}
 
-extension P {
-    func defaultImplementation() {}
+protocol P{}
+extension P{
+func a(){
+P.a(self)()
 }
-
-class C : P {
-    
-    func customImplementation() {
-        P.defaultImplementation(self)()
-    }
 }
