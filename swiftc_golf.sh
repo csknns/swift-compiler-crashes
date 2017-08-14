@@ -47,7 +47,6 @@ test_crash_case() {
 echo "Crashing:"
 
 test_crash_case '[.h=_'
-test_crash_case '(&.f>_'
 test_crash_case '(Int==_{'
 test_crash_case 'nil?=nil'
 test_crash_case '[(t:_._=('
@@ -73,6 +72,7 @@ test_crash_case '&_{Int'
 test_crash_case '&_{Range?'
 test_crash_case '&Range.T{'
 test_crash_case '&true{for{'
+test_crash_case '(&.f>_'
 test_crash_case '(()||()x'
 test_crash_case '()=()'
 test_crash_case '([_'
