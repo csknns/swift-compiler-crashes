@@ -46,8 +46,6 @@ test_crash_case() {
 
 echo "Crashing:"
 
-test_crash_case '[.h=_'
-test_crash_case "{for\n;"
 test_crash_case '(Int==_{'
 test_crash_case 'nil?=nil'
 test_crash_case '[(t:_._=('
@@ -55,6 +53,7 @@ test_crash_case '[(t:_._=('
 echo
 echo "Fixed:"
 
+test_crash_case "{for\n;"
 test_crash_case '!('
 test_crash_case '!(0^_{'
 test_crash_case '#if0='
@@ -86,6 +85,7 @@ test_crash_case '.A['
 test_crash_case '.{nil<{\n{'
 test_crash_case '[&(t:_{'
 test_crash_case '[&{}false?'
+test_crash_case '[.h=_'
 test_crash_case '[1,{[1,{[]'
 test_crash_case '[[map'
 test_crash_case '[_?,&_'
